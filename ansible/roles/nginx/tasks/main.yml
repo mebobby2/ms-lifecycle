@@ -39,7 +39,7 @@
 
 - name: Container is reloaded
   shell: docker kill -s HUP nginx
-  when: result|changed
+  # when: result|changed
   tags: [nginx]
 
 - name: Info is sent to Consul
