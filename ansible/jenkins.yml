@@ -2,5 +2,6 @@
   remote_user: vagrant
   serial: 1
   roles:
+    - java
     - consul-template
     - jenkins
