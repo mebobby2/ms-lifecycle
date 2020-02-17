@@ -11,7 +11,9 @@
   docker_container:
     name: jenkins
     image: "vfarcic/jenkins"
-    ports: 8080:8080
+    ports:
+      - 8080:8080
+      - 50000:50000
     volumes:
       - /data/jenkins:/var/jenkins_home
       - /vagrant/.vagrant/machines:/machines
@@ -61,7 +63,9 @@
   docker_container:
     name: jenkins
     image: "vfarcic/jenkins"
-    ports: 8080:8080
+    ports:
+      - 8080:8080
+      - 50000:50000
     volumes:
       - /data/jenkins:/var/jenkins_home
       - /vagrant/.vagrant/machines:/machines
