@@ -19,7 +19,7 @@
   tags: [jenkins]
 
 - pause: seconds=45
-  when: container_result|changed
+  when: container_result.changed
   tags: [jenkins]
 
 - name: Configurations are present
@@ -54,7 +54,7 @@
     name: jenkins
     image: "vfarcic/jenkins"
     state: stopped
-  when: configs_result|changed or plugins_result|changed
+  when: configs_result.changed or plugins_result.changed
   tags: [jenkins]
 
 - name: Container is running
@@ -65,11 +65,11 @@
     volumes:
       - /data/jenkins:/var/jenkins_home
       - /vagrant/.vagrant/machines:/machines
-  when: configs_result|changed or plugins_result|changed
+  when: configs_result.changed or plugins_result.changed
   tags: [jenkins]
 
 - pause: seconds=30
-  when: configs_result|changed or plugins_result|changed
+  when: configs_result.changed or plugins_result.changed
   tags: [jenkins]
 
 - name: Job directories are present
@@ -94,7 +94,7 @@
     url: http://{{ ip }}:8080/reload
     method: POST
     status_code: 200,302
-  when: jobs_result|changed
+  when: jobs_result.changed
   ignore_errors: yes
   tags: [jenkins]
 
