@@ -10,12 +10,12 @@
 - name: Container is running
   docker_container:
     name: jenkins
-    image: "vfarcic/jenkins"
+    image: "10.100.198.200:5000/jenkins"
     ports:
       - 8080:8080
       - 50000:50000
     volumes:
-      - /data/jenkins:/var/jenkins_home
+      - /data/jenkins:/root/.jenkins
       - /vagrant/.vagrant/machines:/machines
   register: container_result
   tags: [jenkins]
@@ -54,7 +54,7 @@
 - name: Container is stopped
   docker_container:
     name: jenkins
-    image: "vfarcic/jenkins"
+    image: "10.100.198.200:5000/jenkins"
     state: stopped
   when: configs_result.changed or plugins_result.changed
   tags: [jenkins]
@@ -62,12 +62,12 @@
 - name: Container is running
   docker_container:
     name: jenkins
-    image: "vfarcic/jenkins"
+    image: "10.100.198.200:5000/jenkins"
     ports:
       - 8080:8080
       - 50000:50000
     volumes:
-      - /data/jenkins:/var/jenkins_home
+      - /data/jenkins:/root/.jenkins
       - /vagrant/.vagrant/machines:/machines
   when: configs_result.changed or plugins_result.changed
   tags: [jenkins]
