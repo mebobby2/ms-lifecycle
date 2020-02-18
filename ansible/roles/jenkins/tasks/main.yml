@@ -15,7 +15,7 @@
       - 8080:8080
       - 50000:50000
     volumes:
-      - /data/jenkins:/root/.jenkins
+      - /data/jenkins:/var/jenkins_home
       - /vagrant/.vagrant/machines:/machines
   register: container_result
   tags: [jenkins]
@@ -67,7 +67,7 @@
       - 8080:8080
       - 50000:50000
     volumes:
-      - /data/jenkins:/root/.jenkins
+      - /data/jenkins:/var/jenkins_home
       - /vagrant/.vagrant/machines:/machines
   when: configs_result.changed or plugins_result.changed
   tags: [jenkins]

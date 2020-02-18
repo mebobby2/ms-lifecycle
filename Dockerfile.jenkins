@@ -25,8 +25,9 @@ RUN wget https://dl.bintray.com/sbt/debian/sbt-0.13.6.deb && \
 ADD http://mirrors.jenkins-ci.org/war/latest/jenkins.war /opt/jenkins.war
 RUN ln -sf /jenkins /root/.jenkins
 
+ENV JENKINS_HOME /var/jenkins_home
 
-ENTRYPOINT ["java", "-jar", "/opt/jenkins.war"]
+ENTRYPOINT ["java", "-Djenkins.install.runSetupWizard=false", "-jar", "/opt/jenkins.war"]
 EXPOSE 8080
 VOLUME ["/jenkins"]
 CMD [""]
