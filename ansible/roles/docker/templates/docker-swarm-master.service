@@ -8,9 +8,7 @@ Requires=docker.socket
 Type=notify
 ExecStart=/usr/bin/docker daemon -H fd:// \
           --insecure-registry 10.100.198.200:5000 \
-          --registry-mirror=http://10.100.198.200:5001 \
-          --cluster-store=consul://{{ ip }}:8500/swarm \
-          --cluster-advertise={{ ip }}:2375 {{ docker_extra }}
+          --registry-mirror=http://10.100.198.200:5001
 MountFlags=master
 LimitNOFILE=1048576
 LimitNPROC=1048576
@@ -18,4 +16,3 @@ LimitCORE=infinity
 
 [Install]
 WantedBy=multi-user.target
-

@@ -1,0 +1,4 @@
+- name: Add Workers to the Swarm
+  shell: "docker swarm join --token {{ hostvars[groups['swarm-master'][0]]['worker_token']['stdout'] }} {{ swarm_master_ip }}:2377"
+  when: not swarm_master is defined
+  tags: swarm
