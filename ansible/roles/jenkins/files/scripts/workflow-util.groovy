@@ -68,7 +68,7 @@ def deploySwarm(serviceName, swarmIp, color, instances) {
         sh "docker service create --name ${serviceName}-${color} --network ${serviceName}-nw --publish 0:8080 --env SERVICE_NAME=${serviceName}-${color} --env DB_HOST=${serviceName}-db 10.100.198.200:5000/${serviceName}"
         def port = sh(script: "docker service inspect --format=\"{{(index (index .Endpoint.Ports) 0).PublishedPort}}\" ${serviceName}-${color}", returnStdout: true)
 
-        setPort("${serviceName}-${color}", swarmIp, port)
+        setPort("${serviceName}-${color}", swarmIp, port.trim())
 
         // Not sure why this line isn't working
         // sh "docker service scale ${serviceName}-${color}=${instances}"
