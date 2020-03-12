@@ -56,17 +56,18 @@ def deployBG(serviceName, prodIp, color) {
 def deploySwarm(serviceName, swarmIp, color, instances) {
     stage "Deploy"
     withEnv(["DOCKER_HOST=tcp://${swarmIp}:2375"]) {
-        sh "docker-compose -f docker-compose-swarm-v2.yml \
-            pull app-${color}"
         try {
-            sh "docker network create ${serviceName}"
+            sh "docker network create --driver overlay ${serviceName}-nw"
         } catch (e) {}
-        sh "docker-compose -f docker-compose-swarm-v2.yml \
-            -p ${serviceName} up -d db"
-        sh "docker-compose -f docker-compose-swarm-v2.yml \
-            -p ${serviceName} up -d app-${color}"
-        sh "docker-compose -f docker-compose-swarm-v2.yml \
-            -p ${serviceName} scale app-${color}=${instances}"
+        try {
+            sh "docker service rm ${serviceName}-db"
+            sh "docker service rm ${serviceName}-${color}"
+        } catch (e) {}
+        sh "docker service create --name ${serviceName}-db --network ${serviceName}-nw --publish 27017:27017 --reserve-cpu=0.5 --reserve-memory=1GB mongo"
+        sh "docker service create --name ${serviceName}-${color} --network ${serviceName}-nw --publish 8080:8080 --env SERVICE_NAME=${serviceName}-${color} --env DB_HOST=${serviceName}-db 10.100.198.200:5000/${serviceName}"
+
+        // Not sure why this line isn't working
+        // sh "docker service scale ${serviceName}-${color}=${instances}"
     }
     putInstances(serviceName, swarmIp, instances)
 }
