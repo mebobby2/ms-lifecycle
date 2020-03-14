@@ -12,20 +12,20 @@ def provision(playbook) {
 }
 
 def buildTests(serviceName, registryIpPort) {
-    stage "Build tests"
-    def tests = docker.image("${registryIpPort}/${serviceName}-tests")
-    try {
-        tests.pull()
-    } catch(e) {}
-    sh "docker build -t \"${registryIpPort}/${serviceName}-tests\" \
-        -f Dockerfile.test ."
-    tests.push()
+    // stage "Build tests"
+    // def tests = docker.image("${registryIpPort}/${serviceName}-tests")
+    // try {
+    //     tests.pull()
+    // } catch(e) {}
+    // sh "docker build -t \"${registryIpPort}/${serviceName}-tests\" \
+    //     -f Dockerfile.test ."
+    // tests.push()
 }
 
 def runTests(serviceName, target, extraArgs) {
-    stage "Run ${target} tests"
-    sh "docker-compose -f docker-compose-dev.yml \
-        run --rm ${extraArgs} ${target}"
+    // stage "Run ${target} tests"
+    // sh "docker-compose -f docker-compose-dev.yml \
+    //     run --rm ${extraArgs} ${target}"
 }
 
 def buildService(serviceName, registryIpPort) {
@@ -126,11 +126,11 @@ def stopBG(serviceName, prodIp, color) {
 def stopBGNew(serviceName, prodIp, currentColor, nextColor) {
     stage "Stop"
     withEnv(["DOCKER_HOST=tcp://${prodIp}:2375"]) {
-        if (nextColor.length() > 0) {
-            sh "docker service rm ${serviceName}-${nextColor}"
+        if (currentColor.length() > 0) {
+            sh "docker service rm ${serviceName}-${currentColor}"
         }
-        sh "docker service update --publish-rm 0:8080 ${serviceName}-${currentColor}"
-        sh "docker service update --publish-add 80:8080 ${serviceName}-${currentColor}"
+        sh "docker service update --publish-rm 0:8080 ${serviceName}-${nextColor}"
+        sh "docker service update --publish-add 80:8080 ${serviceName}-${nextColor}"
         sh "curl -X PUT -d ${currentColor} http://localhost:8500/v1/kv/${serviceName}/color"
     }
 }
