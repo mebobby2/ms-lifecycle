@@ -72,6 +72,7 @@ def deploySwarm(serviceName, swarmIp, color, instances) {
 
         // Not sure why this line isn't working
         // sh "docker service scale ${serviceName}-${color}=${instances}"
+        rc = sh(script: "docker service scale ${serviceName}-${color}=${instances}", returnStatus: true)
     }
     // putInstances(serviceName, swarmIp, instances)
 }
@@ -129,9 +130,11 @@ def stopBGNew(serviceName, prodIp, currentColor, nextColor) {
         if (currentColor.length() > 0) {
             sh "docker service rm ${serviceName}-${currentColor}"
         }
-        sh "docker service update --publish-rm 0:8080 ${serviceName}-${nextColor}"
-        sh "docker service update --publish-add 80:8080 ${serviceName}-${nextColor}"
-        sh "curl -X PUT -d ${currentColor} http://localhost:8500/v1/kv/${serviceName}/color"
+        // sh "docker service update --publish-rm 0:8080 ${serviceName}-${nextColor}"
+        // sh "docker service update --publish-add 80:8080 ${serviceName}-${nextColor}"
+        rc = sh(script: "docker service update --publish-rm 0:8080 ${serviceName}-${nextColor}", returnStatus: true)
+        rc2 = sh(script: "docker service update --publish-add 80:8080 ${serviceName}-${nextColor}", returnStatus: true)
+        sh "curl -X PUT -d ${nextColor} http://${prodIp}:8500/v1/kv/${serviceName}/color"
     }
 }
 
