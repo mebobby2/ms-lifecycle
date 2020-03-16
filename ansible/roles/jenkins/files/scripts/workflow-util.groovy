@@ -128,7 +128,9 @@ def stopBGNew(serviceName, prodIp, currentColor, nextColor) {
     stage "Stop"
     withEnv(["DOCKER_HOST=tcp://${prodIp}:2375"]) {
         if (currentColor.length() > 0) {
-            sh "docker service rm ${serviceName}-${currentColor}"
+            try {
+                sh "docker service rm ${serviceName}-${currentColor}"
+            } catch (e) {}
         }
         // sh "docker service update --publish-rm 0:8080 ${serviceName}-${nextColor}"
         // sh "docker service update --publish-add 80:8080 ${serviceName}-${nextColor}"
