@@ -3,6 +3,8 @@ MAINTAINER Bobby Lei, "bobl53@gmail.com"
 
 # General
 RUN echo deb http://archive.ubuntu.com/ubuntu cosmic universe >> /etc/apt/sources.list
+RUN sed -i s/archive.ubuntu.com/old-releases.ubuntu.com/g /etc/apt/sources.list
+RUN sed -i s/security.ubuntu.com/old-releases.ubuntu.com/g /etc/apt/sources.list
 RUN apt-get update && apt-get clean
 RUN apt-get install -q -y wget unzip git
 
