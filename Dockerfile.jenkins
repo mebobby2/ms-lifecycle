@@ -24,7 +24,7 @@ RUN wget https://dl.bintray.com/sbt/debian/sbt-0.13.6.deb && \
     rm sbt-0.13.6.deb
 
 # Jenkins
-ADD http://mirrors.jenkins-ci.org/war/latest/jenkins.war /opt/jenkins.war
+ADD http://mirrors.jenkins-ci.org/war/2.220/jenkins.war /opt/jenkins.war
 RUN ln -sf /jenkins /root/.jenkins
 
 ENV JENKINS_HOME /var/jenkins_home
