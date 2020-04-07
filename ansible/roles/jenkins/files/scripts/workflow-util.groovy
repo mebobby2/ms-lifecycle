@@ -30,12 +30,12 @@ def runTests(serviceName, target, extraArgs) {
 
 def buildService(serviceName, registryIpPort) {
     stage "Build service"
-    def service = docker.image("${registryIpPort}/${serviceName}")
-    try {
-        service.pull()
-    } catch(e) {}
-    docker.build "${registryIpPort}/${serviceName}"
-    service.push()
+    // def service = docker.image("${registryIpPort}/${serviceName}")
+    // try {
+    //     service.pull()
+    // } catch(e) {}
+    // docker.build "${registryIpPort}/${serviceName}"
+    // service.push()
 }
 
 def deploy(serviceName, prodIp) {
